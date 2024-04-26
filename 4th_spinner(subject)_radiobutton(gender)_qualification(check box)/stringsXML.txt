@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Fourth_exp_3rd_try</string>
+    <string-array name="sub_name">
+        <item>DBM</item>
+        <item>ANDROID DEVELOPMENT</item>
+        <item>FOC</item>
+        <item>VLSI</item>
+        <item>CLOUD COMPUTING</item>
+    </string-array>
+</resources>

@@ -1,0 +1,110 @@
+package com.example.media_player;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button btnPause, btnPlay, btnStop;
+    private MediaPlayer mediaPlayer;
+    private SeekBar seekBar;
+    private Handler seekHandler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnPause = findViewById(R.id.btnPause);
+        btnPlay = findViewById(R.id.btnPlay);
+        btnStop = findViewById(R.id.btnStop);
+        seekBar = findViewById(R.id.seekBar);
+
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        String aPath = "android.resource://" + getPackageName() + "/raw/zaalim_badshah";
+        Uri audioURI = Uri.parse(aPath);
+        try {
+            mediaPlayer.setDataSource(this, audioURI);
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.pause();
+            }
+        });
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.start();
+                updateSeekBar();
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+                seekBar.setProgress(0);
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mediaPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // No action needed
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // No action needed
+            }
+        });
+    }
+
+    private void updateSeekBar() {
+        seekBar.setMax(mediaPlayer.getDuration());
+
+        MainActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mediaPlayer != null) {
+                    int mCurrentPosition = mediaPlayer.getCurrentPosition();
+                    seekBar.setProgress(mCurrentPosition);
+                }
+                seekHandler.postDelayed(this, 1000);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+}

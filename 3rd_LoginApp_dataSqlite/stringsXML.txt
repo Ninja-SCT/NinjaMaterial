@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LoginPageSqlite</string>
+    <string name="first_name">First Name</string>
+    <string name="password">Password</string>
+    <string name="re_password">Re-Password</string>
+    <string name="button">Sign In Button</string>
+</resources>

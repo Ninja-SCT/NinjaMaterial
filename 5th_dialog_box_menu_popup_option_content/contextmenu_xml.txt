@@ -1,0 +1,16 @@
+right click the resunder app------->click New-------> click Directory------->Type menu------->click Enter on keyboard------->right click the menu------->New------->Menu Resource File
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item1"
+        android:title="Share"/>
+    <item
+        android:id="@+id/item2"
+        android:title="Delete"/>
+</menu>
+
